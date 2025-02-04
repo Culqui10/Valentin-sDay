@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: radial-gradient(circle, #0b0b3b, #000);
+    position: relative;
+  }
+  /* Estilo para los pequeños corazones */
+  .corazon {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: red;
+    transform: rotate(-45deg);
+  }
+  .corazon::before,
+  .corazon::after {
+    content: "";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: rgb(255, 0, 0);
+    border-radius: 50%;
+  }
+  .corazon::before {
+    top: -12.5px;
+    left: 0;
+  }
+  .corazon::after {
+    left: 12.5px;
+    top: 0;
+  }

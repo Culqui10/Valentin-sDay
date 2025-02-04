@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Para ti💖</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <script>
+        // Definimos cada letra como un array de 5 filas (píxel art simple)
+        const T = [
+            "#####",
+            "  #  ",
+            "  #  ",
+            "  #  ",
+            "  #  "
+        ];
+        const E = [
+            "#####",
+            "#    ",
+            "#### ",
+            "#    ",
+            "#####"
+        ];
+        const Y = [
+            "  ",
+            "  ",
+            "  ",
+            "  ",
+            "  "
+        ];
+        const A = [
+            "#####",
+            "#   #",
+            "#####",
+            "#   #",
+            "#   #"
+        ];
+        const M = [
+            "##    ##",
+            "# #  # #",
+            "#  ##  #",
+            "#      #",
+            "#      #"
+        ];
+        const O = [
+            "#####",
+            "#   #",
+            "#   #",
+            "#   #",
+            "##### "
+        ];
+
+
+        // Creamos la formación de letras para la frase "TE QUIERO"
+        // La frase consta de: T, E, A, M, O. Separamos cada letra con un espacio.
+        const letras = [T, E, Y, A, M, O];
+        const patternRows = [];
+        const filas = 5; // cada letra tiene 5 filas
+
+        for (let i = 0; i < filas; i++) {
+            let row = "";
+            letras.forEach((letra, idx) => {
+                row += letra[i];
+                if (idx !== letras.length - 1) {
+                    row += " "; // separación entre letras
+                }
+            });
+            patternRows.push(row);
+        }
+
+        // Parámetros de la "cuadrícula"
+        const cellSize = 30; // tamaño de cada "píxel" (espacio para cada corazón)
+        const formationWidth = patternRows[0].length * cellSize;
+        const formationHeight = patternRows.length * cellSize;
+        const startX = (window.innerWidth - formationWidth) / 2;
+        const startY = (window.innerHeight - formationHeight) / 2;
+
+        // Creamos los corazones que formarán la frase.
+        const corazones = [];
+        for (let row = 0; row < patternRows.length; row++) {
+            for (let col = 0; col < patternRows[row].length; col++) {
+                if (patternRows[row][col] !== " ") {
+                    // Creamos un div para cada corazón
+                    const heart = document.createElement("div");
+                    heart.className = "corazon";
+                    document.body.appendChild(heart);
+                    // Posición destino en la cuadrícula
+                    const targetX = startX + col * cellSize;
+                    const targetY = startY + row * cellSize;
+                    // Inicialmente, lo ubicamos en una posición aleatoria fuera de la formación y con opacidad 0
+                    gsap.set(heart, {
+                        x: Math.random() * window.innerWidth,
+                        y: Math.random() * window.innerHeight,
+                        opacity: 0,
+                    });
+                    // Guardamos el elemento y su posición destino
+                    corazones.push({ element: heart, x: targetX, y: targetY });
+                }
+            }
+        }
+
+        // Animamos cada corazón para que se mueva a su posición correspondiente
+        corazones.forEach((obj, i) => {
+            gsap.to(obj.element, {
+                x: obj.x,
+                y: obj.y,
+                opacity: 1,
+                delay: i * 0.03,
+                duration: 7,
+                ease: "elastic.out(1, 0.5)",
+            });
+        });
+
+        // Luego de unos segundos, animamos un corazón grande que se posicione después de la formación (al final)
+        setTimeout(() => {
+            const heartBig = document.createElement("div");
+            heartBig.className = "corazon";
+            document.body.appendChild(heartBig);
+            // Posicionarlo justo a la derecha de la formación (última columna)
+            const bigX = startX + patternRows[0].length * cellSize + 80;
+            const bigY = startY + formationHeight / 2 - cellSize / 10;
+            gsap.set(heartBig, {
+                x: bigX,
+                y: bigY,
+                scale: 0,
+            });
+            gsap.to(heartBig, {
+                scale: 4,
+                duration: 20,
+                ease: "elastic.out(1, 0.5)",
+            });
+        }, 2500);
+
+
+    </script>
+
+</body>
+
+</html>
